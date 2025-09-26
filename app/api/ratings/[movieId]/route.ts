@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest, { params }: { params: { movieId: string } }) {
-  const { movieId } = params;
+export async function POST(request: NextRequest, context: { params: Promise<{ movieId: string }> }) {
+  const { movieId } = await context.params;
   const { rating, sessionId } = await request.json();
   const res = await fetch(
     `https://api.themoviedb.org/3/movie/${movieId}/rating?api_key=${process.env.API_KEY}&guest_session_id=${sessionId}`,
@@ -21,8 +21,8 @@ export async function POST(request: NextRequest, { params }: { params: { movieId
   return NextResponse.json({ success: true, data });
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { movieId: string } }) {
-  const { movieId } = params;
+export async function DELETE(request: NextRequest, context: { params: Promise<{ movieId: string }> }) {
+  const { movieId } = await context.params;
   const { sessionId } = await request.json();
 
   const res = await fetch(
