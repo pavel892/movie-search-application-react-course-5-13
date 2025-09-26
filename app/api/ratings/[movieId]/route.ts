@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: Request, { params }: { params: { movieId: string } }) {
+export async function POST(request: NextRequest, { params }: { params: { movieId: string } }) {
   const { movieId } = params;
-  const { rating, sessionId } = await req.json();
+  const { rating, sessionId } = await request.json();
   const res = await fetch(
     `https://api.themoviedb.org/3/movie/${movieId}/rating?api_key=${process.env.API_KEY}&guest_session_id=${sessionId}`,
     {
@@ -21,9 +21,9 @@ export async function POST(req: Request, { params }: { params: { movieId: string
   return NextResponse.json({ success: true, data });
 }
 
-export async function DELETE(req: Request, { params }: { params: { movieId: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: { movieId: string } }) {
   const { movieId } = params;
-  const { sessionId } = await req.json();
+  const { sessionId } = await request.json();
 
   const res = await fetch(
     `https://api.themoviedb.org/3/movie/${movieId}/rating?api_key=${process.env.API_KEY}&guest_session_id=${sessionId}`,
