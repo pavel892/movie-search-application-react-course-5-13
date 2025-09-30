@@ -29,6 +29,7 @@ export const MoviesProvider = ({ children }: { children: React.ReactNode }) => {
   const [movies, setMovies] = useState<MovieObject[]>([]);
   const [genres, setGenres] = useState<GenreObject[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [ratings, setRatings] = useState<Record<number, number>>({});
 
   useEffect(() => {
     async function fetchGenres() {
@@ -50,5 +51,26 @@ export const MoviesProvider = ({ children }: { children: React.ReactNode }) => {
     fetchGenres();
   }, []);
 
-  return <MoviesContext.Provider value={{ movies, setMovies, genres, error }}>{children}</MoviesContext.Provider>;
+  const setRating = (movieId: number, value: number) => {
+    setRatings((prev) => {
+      const updated = { ...prev, [movieId]: value };
+      localStorage.setItem('guest_ratings', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const removeRating = (movieId: number) => {
+    setRatings((prev) => {
+      const updated = { ...prev };
+      delete updated[movieId];
+      localStorage.setItem('guest_ratings', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  return (
+    <MoviesContext.Provider value={{ movies, setMovies, genres, error, ratings, setRating, removeRating }}>
+      {children}
+    </MoviesContext.Provider>
+  );
 };

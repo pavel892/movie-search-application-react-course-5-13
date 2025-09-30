@@ -29,11 +29,11 @@ export default function MovieCard({ image, title, rating, date, description, mov
     <>
       <div
         style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
-        className="h-[245px] lg:h-[279px] mb-5 md:mb-[37px] lg:mb-[37px] hidden lg:flex"
+        className="min-h-[245px] lg:min-h-[279px] mb-5 md:mb-[37px] lg:mb-[37px] hidden lg:flex"
       >
         <div>
           <img
-            className="mt-1.5 ml-2.5 lg:mt-0 lg:ml-0 h-[91px] w-[60px] lg:h-[100%] lg:w-[183px] max-w-none"
+            className="mt-1.5 ml-2.5 lg:mt-0 lg:ml-0 h-[91px] w-[60px] lg:h-[279px] lg:w-[183px] max-w-none"
             src={`https://image.tmdb.org/t/p/w1280${image}`}
             alt="poster"
           />
@@ -67,7 +67,7 @@ export default function MovieCard({ image, title, rating, date, description, mov
 
       <div
         style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
-        className="h-[255px] mb-5 md:mb-[37px] lg:hidden md:flex-col sm:flex-col"
+        className="min-h-[255px] mb-5 md:mb-[37px] lg:hidden md:flex-col sm:flex-col"
       >
         <div className="flex">
           <div>
@@ -98,7 +98,7 @@ export default function MovieCard({ image, title, rating, date, description, mov
         <div className="top-[120px]">
           <p className="ml-2.5 mr-2.5 mb-[7px] text-xs line-clamp-4">{description}</p>
           <div className="flex">
-            <div className="ml-auto mr-2.5">
+            <div className="ml-auto mr-2.5 mb-1">
               <RateComponent movieId={movieId} />
             </div>
           </div>

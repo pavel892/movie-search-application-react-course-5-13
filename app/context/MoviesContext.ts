@@ -29,4 +29,7 @@ export const MoviesContext = createContext<{
   setMovies: React.Dispatch<React.SetStateAction<MovieObject[]>>;
   genres: GenreObject[];
   error: string | null;
+  ratings: Record<number, number>;
+  setRating: (movieId: number, value: number) => void;
+  removeRating: (movieId: number) => void;
 } | null>(null);

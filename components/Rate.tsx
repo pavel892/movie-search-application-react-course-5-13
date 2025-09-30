@@ -2,18 +2,18 @@
 
 import { useMovies } from '@/app/context/useMovies';
 import { ConfigProvider, Rate } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useSession } from './SessionProvider';
 
 interface RateComponentProps {
   movieId: number;
 }
 
-const sessionId = localStorage.getItem('sessionId');
-
 export default function RateComponent({ movieId }: RateComponentProps) {
-  const [value, setValue] = useState<number>(0);
+  const { ratings, setMovies, setRating, removeRating } = useMovies();
+  const value = ratings[movieId] || 0;
   const [error, setError] = useState<string | null>(null);
-  const { setMovies } = useMovies();
+  const { sessionId } = useSession();
 
   async function fetchRatedMovies(sessionId: string) {
     try {
@@ -93,27 +93,18 @@ export default function RateComponent({ movieId }: RateComponentProps) {
     }
   }
 
-  useEffect(() => {
-    const ratings = JSON.parse(localStorage.getItem('guest_ratings') || '{}');
-    if (ratings[movieId]) {
-      setValue(ratings[movieId]);
-    }
-  }, [movieId]);
-
   function handleChange(e: number) {
     if (e === value) {
       deleteRating(movieId);
-      setValue(0);
-      const ratings = JSON.parse(localStorage.getItem('guest_ratings') || '{}');
-      delete ratings[movieId];
-      localStorage.setItem('guest_ratings', JSON.stringify(ratings));
+      removeRating(movieId);
     } else {
       rateMovie(movieId, e);
-      setValue(e);
-      const ratings = JSON.parse(localStorage.getItem('guest_ratings') || '{}');
-      ratings[movieId] = e;
-      localStorage.setItem('guest_ratings', JSON.stringify(ratings));
+      setRating(movieId, e);
     }
+  }
+
+  if (!sessionId) {
+    return <div>Loading...</div>;
   }
   return (
     <>
